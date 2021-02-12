@@ -9,7 +9,8 @@
     "bundle:browser": "cross-env BROWSER_ONLY=true rollup --config",
     "bundle": "rollup --config",
     "typings": "tsc -d --declarationDir typings",
-    "prepack": "npm run bundle"
+    "prepack": "npm run bundle",
+    "postinstall" : "npm run bundle"
   },
   "repository": {
     "type": "git",
