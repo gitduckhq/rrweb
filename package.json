@@ -10,7 +10,7 @@
     "bundle": "rollup --config",
     "typings": "tsc -d --declarationDir typings",
     "prepack": "npm run bundle",
-    "postinstall" : "npm run bundle"
+    "postinstall" : "npm i && npm run bundle"
   },
   "repository": {
     "type": "git",
