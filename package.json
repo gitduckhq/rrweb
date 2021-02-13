@@ -1,5 +1,5 @@
 {
-  "name": "rrweb",
+  "name": "@gitduckhq/rrweb",
   "version": "0.9.14",
   "description": "record and replay the web",
   "scripts": {
@@ -10,11 +10,11 @@
     "bundle": "rollup --config",
     "typings": "tsc -d --declarationDir typings",
     "prepack": "npm run bundle",
-    "postinstall": "npm run bundle"
+    "prepare": "npm run bundle"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/rrweb-io/rrweb.git"
+    "url": "git+ssh://git@github.com:gitduckhq/rrweb.git"
   },
   "keywords": [
     "rrweb"
@@ -49,13 +49,7 @@
     "mocha": "^5.2.0",
     "puppeteer": "^1.11.0",
     "ts-node": "^7.0.1",
-    "tslint": "^4.5.1"
-  },
-  "dependencies": {
-    "@types/css-font-loading-module": "0.0.4",
-    "@xstate/fsm": "^1.4.0",
-    "fflate": "^0.4.4",
-    "mitt": "^1.1.3",
+    "tslint": "^4.5.1",
     "rrweb-snapshot": "^1.0.6",
     "rollup": "^2.3.3",
     "rollup-plugin-commonjs": "^9.2.0",
@@ -65,5 +59,11 @@
     "rollup-plugin-typescript": "^1.0.0",
     "typescript": "^3.9.5",
     "tslib": "^1.9.3"
+  },
+  "dependencies": {
+    "@types/css-font-loading-module": "0.0.4",
+    "@xstate/fsm": "^1.4.0",
+    "fflate": "^0.4.4",
+    "mitt": "^1.1.3"
   }
 }
