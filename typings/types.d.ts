@@ -113,6 +113,7 @@ export declare type SamplingStrategy = Partial<{
     mouseInteraction: boolean | Record<string, boolean | undefined>;
     scroll: number;
     input: 'all' | 'last';
+    mouseTransmitThreshold: number
 }>;
 export declare type recordOptions<T> = {
     emit?: (e: T, isCheckout?: boolean) => void;
