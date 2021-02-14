@@ -87,8 +87,9 @@ function initMoveObserver(
     return () => {};
   }
 
-  const threshold =
+  const mouseMoveThreshold =
     typeof sampling.mousemove === 'number' ? sampling.mousemove : 50;
+  const mouseTransmitThreshold = sampling.mouseTransmitThreshold ?? 500;
 
   let positions: mousePosition[] = [];
   let timeBaseline: number | null;
@@ -103,7 +104,7 @@ function initMoveObserver(
     );
     positions = [];
     timeBaseline = null;
-  }, 500);
+  }, mouseTransmitThreshold);
   const updatePosition = throttle<MouseEvent | TouchEvent>(
     (evt) => {
       const { target } = evt;
@@ -121,7 +122,7 @@ function initMoveObserver(
       });
       wrappedCb(isTouchEvent(evt));
     },
-    threshold,
+    mouseMoveThreshold,
     {
       trailing: false,
     },
