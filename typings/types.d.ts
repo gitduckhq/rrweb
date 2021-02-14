@@ -367,6 +367,7 @@ export declare type playerConfig = {
     };
     unpackFn?: UnpackFn;
     logConfig: LogReplayConfig;
+    customCursor: string;
 };
 export declare type LogReplayConfig = {
     level?: Array<LogLevel> | undefined;
