@@ -79,6 +79,8 @@ By recording the mouse movement position, we can simulate the mouse movement tra
 
 Try to ensure that the mouse moves smoothly during replay and also minimize the number of corresponding incremental snapshots, so we need to perform two layers of throttling while listening to mousemove. The first layer records the mouse coordinates at most once every 20 ms, the second layer transmits the mouse coordinate set at most once every 500 ms to ensure a single snapshot doesn't accumulate a lot of mouse position data and becomes too large.
 
+Those parameters can be overriden by using the `sampling.mousemove` and `sampling.mouseTransmitThreshold` properties on the record() config
+
 ### Time reversal
 We record a timestamp when each incremental snapshot is generated so that during replay it can be applied at the correct time. However, due to the effect of throttling, the timestamps of the mouse movement corresponding to the incremental snapshot will be later than the actual recording time, so we need to record a negative time difference for correction and time calibration during replay.
 

@@ -178,6 +178,10 @@ export type SamplingStrategy = Partial<{
    * 'last' will only record the last input value while input a sequence of chars
    */
   input: 'all' | 'last';
+  /**
+   * throttle threshold from tramission to the snapshot 
+   */
+  mouseTransmitThreshold: number
 }>;
 
 export type recordOptions<T> = {
