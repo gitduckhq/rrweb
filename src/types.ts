@@ -507,6 +507,7 @@ export type playerConfig = {
       };
   unpackFn?: UnpackFn;
   logConfig: LogReplayConfig;
+  customCursor: string
 };
 
 export type LogReplayConfig = {
