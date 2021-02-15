@@ -293,6 +293,7 @@ The replayer accepts options as its constructor's second parameter, and it has t
 | mouseTail           | true          | whether to show mouse tail during replay. Set to false to disable mouse tail. A complete config can be found in this [type](https://github.com/rrweb-io/rrweb/blob/9488deb6d54a5f04350c063d942da5e96ab74075/src/types.ts#L407) |
 | unpackFn            | -             | refer to the [storage optimization recipe](./docs/recipes/optimize-storage.md)                                                                                                                                                 |
 | logConfig           | -             | configuration of console output playback, refer to the [console recipe](./docs/recipes/console.md)                                                                                                                             |
+| customCursor           | -             | overrides the default cursor, expects a CSS base64 string                                                                                                                            |
 
 #### Use rrweb-player
 

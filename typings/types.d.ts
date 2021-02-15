@@ -113,6 +113,7 @@ export declare type SamplingStrategy = Partial<{
     mouseInteraction: boolean | Record<string, boolean | undefined>;
     scroll: number;
     input: 'all' | 'last';
+    mouseTransmitThreshold: number
 }>;
 export declare type recordOptions<T> = {
     emit?: (e: T, isCheckout?: boolean) => void;
@@ -359,6 +360,7 @@ export declare type playerConfig = {
     };
     unpackFn?: UnpackFn;
     logConfig: LogReplayConfig;
+    customCursor: string;
 };
 export declare type LogReplayConfig = {
     level?: Array<LogLevel> | undefined;
