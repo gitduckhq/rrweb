@@ -443,7 +443,7 @@ export class Replayer {
     const iframeHeightContainer = parseFloat(this.iframe.height)
     const factor = size / iframeWidthContainer
 
-    if ( factor > 0.99) {
+    if (factor > 0.99) {
       this.originalFit()
       return
     }
