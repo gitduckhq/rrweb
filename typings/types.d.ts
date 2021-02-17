@@ -360,7 +360,7 @@ export declare type playerConfig = {
     };
     unpackFn?: UnpackFn;
     logConfig: LogReplayConfig;
-    customCursor: string;
+    customCursor: HTMLDivElement;
 };
 export declare type LogReplayConfig = {
     level?: Array<LogLevel> | undefined;
