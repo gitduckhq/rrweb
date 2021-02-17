@@ -119,6 +119,7 @@ export class Replayer {
 
   private offsetFactorFit = 1
   private offsetMarginFit = 0
+  private currentFitSize: number | null = null
 
   constructor(
     events: Array<eventWithTime | string>,
@@ -153,7 +154,6 @@ export class Replayer {
     this.emitter.on(ReplayerEvents.Resize, this.handleResize as Handler);
 
     this.setupDom();
-    this.setUpAutoFit()
 
     this.treeIndex = new TreeIndex();
     this.fragmentParentMap = new Map<INode, INode>();
@@ -425,49 +425,48 @@ export class Replayer {
     }
   }
 
-  private setUpAutoFit() {
-    var observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type == "attributes") {
-          this.diggestAutoFit()
-        }
-      });
-    });
+  public originalFit() {
+    this.offsetMarginFit = 0
+    this.offsetFactorFit = 1
+    this.currentFitSize = null
+
+    this.iframe.style.transform = ''
+    this.iframe.style.marginLeft = '0'
+    this.iframe.style.marginTop = '0'
+  }
+
+  public autoFitToWidth(size: number) {
+    this.offsetMarginFit = 0
+    this.offsetFactorFit = 1
+    this.currentFitSize = size
+
+    const iframeWidthContainer = parseFloat(this.iframe.width)
+    const iframeHeightContainer = parseFloat(this.iframe.height)
+    const factor = size / iframeWidthContainer
+
+    if ( factor > 0.99) {
+      this.originalFit()
+      return
+    }
+
+    const margin = (iframeWidthContainer - size) / 2
+    const hegihtDiffOnFit = iframeHeightContainer - (iframeHeightContainer * factor)
+
+    this.iframe.style.transform = `scale(${factor})`
+    this.iframe.style.marginLeft = `-${margin}px`
+
+    this.iframe.style.marginTop = `-${hegihtDiffOnFit / 2}px`
     
-    observer.observe(this.wrapper, {
-      attributes: true
-    });
-
-    this.diggestAutoFit()
-
-    return observer
+    this.offsetFactorFit = factor
+    this.offsetMarginFit = hegihtDiffOnFit / 2
+    
   }
 
   private diggestAutoFit() {
-    this.offsetMarginFit = 0
-    this.offsetFactorFit = 1
-
-    if(!this.wrapper.hasAttribute('data-fit') || this.wrapper.getAttribute('data-fit') === '0') {
-      this.iframe.style.transform = ''
-      this.iframe.style.marginLeft = '0'
-      this.iframe.style.marginTop = '0'
+    if(this.currentFitSize !== null) {
+      this.autoFitToWidth(this.currentFitSize)
     } else {
-      const sizeWidthContainer = parseFloat(this.wrapper.getAttribute('data-fit') ?? '0')
-      const iframeWidthContainer = parseFloat(this.iframe.width)
-      const iframeHeightContainer = parseFloat(this.iframe.height)
-
-      const factor = sizeWidthContainer / iframeWidthContainer
-      if ( factor > 0.99) return
-      const margin = (iframeWidthContainer - sizeWidthContainer) / 2
-      const hegihtDiffOnFit = iframeHeightContainer - (iframeHeightContainer * factor)
-
-      this.iframe.style.transform = `scale(${factor})`
-      this.iframe.style.marginLeft = `-${margin}px`
-
-      this.iframe.style.marginTop = `-${hegihtDiffOnFit / 2}px`
-      
-      this.offsetFactorFit = factor
-      this.offsetMarginFit = hegihtDiffOnFit / 2
+      this.originalFit()
     }
   }
 
