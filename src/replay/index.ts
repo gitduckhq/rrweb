@@ -424,7 +424,7 @@ export class Replayer {
     }
   }
 
-  public originalFit() {
+  public resetAutoFit() {
     this.offsetMarginFit = 0
     this.offsetFactorFit = 1
     this.currentFitSize = null
@@ -444,20 +444,20 @@ export class Replayer {
     const factor = size / iframeWidthContainer
 
     if (factor > 0.99) {
-      this.originalFit()
+      this.resetAutoFit()
       return
     }
 
     const margin = (iframeWidthContainer - size) / 2
-    const hegihtDiffOnFit = iframeHeightContainer - (iframeHeightContainer * factor)
+    const heightDiffOnFit = iframeHeightContainer - (iframeHeightContainer * factor)
 
     this.iframe.style.transform = `scale(${factor})`
     this.iframe.style.marginLeft = `-${margin}px`
 
-    this.iframe.style.marginTop = `-${hegihtDiffOnFit / 2}px`
+    this.iframe.style.marginTop = `-${heightDiffOnFit / 2}px`
     
     this.offsetFactorFit = factor
-    this.offsetMarginFit = hegihtDiffOnFit / 2
+    this.offsetMarginFit = heightDiffOnFit / 2
     
   }
 
@@ -465,7 +465,7 @@ export class Replayer {
     if (this.currentFitSize !== null) {
       this.autoFitToWidth(this.currentFitSize)
     } else {
-      this.originalFit()
+      this.resetAutoFit()
     }
   }
 

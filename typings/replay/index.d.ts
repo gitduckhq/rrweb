@@ -34,7 +34,7 @@ export declare class Replayer {
     enableInteract(): void;
     disableInteract(): void;
     autoFitToWidth(size: number): void;
-    originalFit(): void;
+    resetAutoFit(): void;
     private setupDom;
     private handleResize;
     private getCastFn;
