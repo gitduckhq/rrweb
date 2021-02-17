@@ -118,7 +118,7 @@ export class Replayer {
   private newDocumentQueue: addedNodeMutation[] = [];
 
   private offsetFactorFit = 1
-  private offsetMarginFit: number | null = null
+  private offsetMarginFit = 0
 
   constructor(
     events: Array<eventWithTime | string>,
@@ -445,7 +445,7 @@ export class Replayer {
   }
 
   private diggestAutoFit() {
-    this.offsetMarginFit = null
+    this.offsetMarginFit = 0
     this.offsetFactorFit = 1
 
     if(!this.wrapper.hasAttribute('data-fit') || this.wrapper.getAttribute('data-fit') === '0') {
@@ -460,14 +460,15 @@ export class Replayer {
       const factor = sizeWidthContainer / iframeWidthContainer
       if ( factor > 0.99) return
       const margin = (iframeWidthContainer - sizeWidthContainer) / 2
-      
+      const hegihtDiffOnFit = iframeHeightContainer - (iframeHeightContainer * factor)
+
       this.iframe.style.transform = `scale(${factor})`
       this.iframe.style.marginLeft = `-${margin}px`
 
-      this.iframe.style.marginTop = `-${(iframeHeightContainer - (iframeHeightContainer * factor)) / 2}px`
+      this.iframe.style.marginTop = `-${hegihtDiffOnFit / 2}px`
       
-      this.offsetFactorFit = 1
-      this.offsetMarginFit = margin
+      this.offsetFactorFit = factor
+      this.offsetMarginFit = hegihtDiffOnFit / 2
     }
   }
 
@@ -1449,8 +1450,11 @@ export class Replayer {
     }
 
     const base = getBaseDimension(target);
-    const _x = x + base.x;
-    const _y = y + base.y;
+    let _x = x + base.x;
+    let _y = y + base.y;
+
+    _x *= this.offsetFactorFit
+    _y = ( _y * this.offsetFactorFit ) + this.offsetMarginFit 
 
     this.mouse.style.left = `${_x}px`;
     this.mouse.style.top = `${_y}px`;
