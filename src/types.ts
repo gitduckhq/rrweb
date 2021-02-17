@@ -179,7 +179,7 @@ export type SamplingStrategy = Partial<{
    */
   input: 'all' | 'last';
   /**
-   * throttle threshold from tramission to the snapshot 
+   * throttle threshold from tramission to the snapshot
    */
   mouseTransmitThreshold: number
 }>;
@@ -201,7 +201,7 @@ export type recordOptions<T> = {
   sampling?: SamplingStrategy;
   recordCanvas?: boolean;
   collectFonts?: boolean;
-  // departed, please use sampling options
+  // deprecated, please use sampling options
   mousemoveWait?: number;
   recordLog?: boolean | LogRecordOptions;
 };
@@ -507,7 +507,7 @@ export type playerConfig = {
       };
   unpackFn?: UnpackFn;
   logConfig: LogReplayConfig;
-  customCursor: string
+  customCursor?: string
 };
 
 export type LogReplayConfig = {
