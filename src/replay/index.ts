@@ -429,7 +429,6 @@ export class Replayer {
     var observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type == "attributes") {
-          console.log("test attributes changed", mutation)
           this.diggestAutoFit()
         }
       });
