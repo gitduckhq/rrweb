@@ -111,6 +111,10 @@ export class Replayer {
 
   private imageMap: Map<eventWithTime, HTMLImageElement> = new Map();
 
+  private offsetFactorFit = 1
+  private offsetMarginFit = 0
+  private currentFitSize: number | null = null
+
   constructor(
     events: Array<eventWithTime | string>,
     config?: Partial<playerConfig>,
@@ -410,6 +414,51 @@ export class Replayer {
     }
   }
 
+  public resetAutoFit() {
+    this.offsetMarginFit = 0
+    this.offsetFactorFit = 1
+    this.currentFitSize = null
+
+    this.iframe.style.transform = ''
+    this.iframe.style.marginLeft = '0'
+    this.iframe.style.marginTop = '0'
+  }
+
+  public autoFitToWidth(size: number) {
+    this.offsetMarginFit = 0
+    this.offsetFactorFit = 1
+    this.currentFitSize = size
+
+    const iframeWidthContainer = parseFloat(this.iframe.width)
+    const iframeHeightContainer = parseFloat(this.iframe.height)
+    const factor = size / iframeWidthContainer
+
+    if (factor > 0.99) {
+      this.resetAutoFit()
+      return
+    }
+
+    const margin = (iframeWidthContainer - size) / 2
+    const heightDiffOnFit = iframeHeightContainer - (iframeHeightContainer * factor)
+
+    this.iframe.style.transform = `scale(${factor})`
+    this.iframe.style.marginLeft = `-${margin}px`
+
+    this.iframe.style.marginTop = `-${heightDiffOnFit / 2}px`
+
+    this.offsetFactorFit = factor
+    this.offsetMarginFit = heightDiffOnFit / 2
+
+  }
+
+  private diggestAutoFit() {
+    if (this.currentFitSize !== null) {
+      this.autoFitToWidth(this.currentFitSize)
+    } else {
+      this.resetAutoFit()
+    }
+  }
+
   private handleResize(dimension: viewportResizeDimention) {
     this.iframe.style.display = 'inherit';
     for (const el of [this.mouseTail, this.iframe]) {
@@ -419,6 +468,8 @@ export class Replayer {
       el.setAttribute('width', String(dimension.width));
       el.setAttribute('height', String(dimension.height));
     }
+
+    this.diggestAutoFit()
   }
 
   private getCastFn(event: eventWithTime, isSync = false) {
@@ -1288,6 +1339,11 @@ export class Replayer {
   }
 
   private moveAndHover(d: incrementalData, x: number, y: number, id: number) {
+    if(this.currentFitSize !== null) 
+    {
+      x *= this.offsetFactorFit
+      y = ( y * this.offsetFactorFit ) + this.offsetMarginFit
+    }
     this.mouse.style.left = `${x}px`;
     this.mouse.style.top = `${y}px`;
     this.drawMouseTail({ x, y });
