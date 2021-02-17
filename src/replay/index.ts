@@ -148,7 +148,6 @@ export class Replayer {
     if (!this.config.logConfig.replayLogger)
       this.config.logConfig.replayLogger = this.getConsoleLogger();
 
-    this.diggestAutoFit = this.diggestAutoFit.bind(this)
     this.handleResize = this.handleResize.bind(this);
     this.getCastFn = this.getCastFn.bind(this);
     this.emitter.on(ReplayerEvents.Resize, this.handleResize as Handler);
@@ -1451,8 +1450,11 @@ export class Replayer {
     let _x = x + base.x;
     let _y = y + base.y;
 
-    _x *= this.offsetFactorFit
-    _y = ( _y * this.offsetFactorFit ) + this.offsetMarginFit 
+    if(this.currentFitSize !== null) 
+    {
+      _x *= this.offsetFactorFit
+      _y = ( _y * this.offsetFactorFit ) + this.offsetMarginFit
+    }
 
     this.mouse.style.left = `${_x}px`;
     this.mouse.style.top = `${_y}px`;
