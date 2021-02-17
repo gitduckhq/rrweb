@@ -32,6 +32,8 @@ export declare class Replayer {
     addEvent(rawEvent: eventWithTime | string): void;
     enableInteract(): void;
     disableInteract(): void;
+    autoFitToWidth(size: number): void;
+    resetAutoFit(): void;
     private setupDom;
     private handleResize;
     private getCastFn;
