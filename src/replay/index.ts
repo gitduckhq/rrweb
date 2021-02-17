@@ -462,7 +462,7 @@ export class Replayer {
   }
 
   private diggestAutoFit() {
-    if(this.currentFitSize !== null) {
+    if (this.currentFitSize !== null) {
       this.autoFitToWidth(this.currentFitSize)
     } else {
       this.originalFit()
