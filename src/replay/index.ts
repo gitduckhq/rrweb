@@ -117,6 +117,9 @@ export class Replayer {
 
   private newDocumentQueue: addedNodeMutation[] = [];
 
+  private offsetFactorFit = 1
+  private offsetMarginFit: number | null = null
+
   constructor(
     events: Array<eventWithTime | string>,
     config?: Partial<playerConfig>,
@@ -144,11 +147,13 @@ export class Replayer {
     if (!this.config.logConfig.replayLogger)
       this.config.logConfig.replayLogger = this.getConsoleLogger();
 
+    this.diggestAutoFit = this.diggestAutoFit.bind(this)
     this.handleResize = this.handleResize.bind(this);
     this.getCastFn = this.getCastFn.bind(this);
     this.emitter.on(ReplayerEvents.Resize, this.handleResize as Handler);
 
     this.setupDom();
+    this.setUpAutoFit.bind(this)()
 
     this.treeIndex = new TreeIndex();
     this.fragmentParentMap = new Map<INode, INode>();
@@ -420,6 +425,52 @@ export class Replayer {
     }
   }
 
+  private setUpAutoFit() {
+    var observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type == "attributes") {
+          console.log("test attributes changed", mutation)
+          this.diggestAutoFit()
+        }
+      });
+    });
+    
+    observer.observe(this.wrapper, {
+      attributes: true
+    });
+
+    this.diggestAutoFit()
+
+    return observer
+  }
+
+  private diggestAutoFit() {
+    this.offsetMarginFit = null
+    this.offsetFactorFit = 1
+
+    if(!this.wrapper.hasAttribute('data-fit') || this.wrapper.getAttribute('data-fit') === '0') {
+      this.iframe.style.transform = ''
+      this.iframe.style.marginLeft = '0'
+      this.iframe.style.marginTop = '0'
+    } else {
+      const sizeWidthContainer = parseFloat(this.wrapper.getAttribute('data-fit') ?? '0')
+      const iframeWidthContainer = parseFloat(this.iframe.width)
+      const iframeHeightContainer = parseFloat(this.iframe.height)
+
+      const factor = sizeWidthContainer / iframeWidthContainer
+      if ( factor > 0.99) return
+      const margin = (iframeWidthContainer - sizeWidthContainer) / 2
+      
+      this.iframe.style.transform = `scale(${factor})`
+      this.iframe.style.marginLeft = `-${margin}px`
+
+      this.iframe.style.marginTop = `-${(iframeHeightContainer - (iframeHeightContainer * factor)) / 2}px`
+      
+      this.offsetFactorFit = 1
+      this.offsetMarginFit = margin
+    }
+  }
+
   private handleResize(dimension: viewportResizeDimension) {
     this.iframe.style.display = 'inherit';
     for (const el of [this.mouseTail, this.iframe]) {
@@ -429,6 +480,8 @@ export class Replayer {
       el.setAttribute('width', String(dimension.width));
       el.setAttribute('height', String(dimension.height));
     }
+
+    this.diggestAutoFit()
   }
 
   private getCastFn(event: eventWithTime, isSync = false) {
