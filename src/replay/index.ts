@@ -153,7 +153,7 @@ export class Replayer {
     this.emitter.on(ReplayerEvents.Resize, this.handleResize as Handler);
 
     this.setupDom();
-    this.setUpAutoFit.bind(this)()
+    this.setUpAutoFit()
 
     this.treeIndex = new TreeIndex();
     this.fragmentParentMap = new Map<INode, INode>();
