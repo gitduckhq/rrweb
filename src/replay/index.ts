@@ -379,10 +379,11 @@ export class Replayer {
     this.wrapper.classList.add('replayer-wrapper');
     this.config.root!.appendChild(this.wrapper);
 
-    this.mouse = document.createElement('div');
-    this.mouse.classList.add('replayer-mouse');
     if (this.config.customCursor) {
-      this.mouse.style.backgroundImage = this.config.customCursor;
+      this.mouse = this.config.customCursor
+    } else {
+      this.mouse = document.createElement('div');
+      this.mouse.classList.add('replayer-mouse');
     }
     
     this.wrapper.appendChild(this.mouse);
