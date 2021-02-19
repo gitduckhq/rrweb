@@ -59,5 +59,5 @@ export declare class Replayer {
     private debugNodeNotFound;
     private warn;
     private debug;
-    drawCustomCursor
+    drawCustomCursor(customCursor: HTMLDivElement, posX:number, posY: number, isNewCursor: boolean): void
 }
