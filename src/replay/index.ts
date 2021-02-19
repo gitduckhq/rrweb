@@ -1340,8 +1340,7 @@ export class Replayer {
   }
 
   private moveAndHover(d: incrementalData, x: number, y: number, id: number) {
-    if(this.currentFitSize !== null) 
-    {
+    if (this.currentFitSize !== null) {
       x *= this.offsetFactorFit
       y = ( y * this.offsetFactorFit ) + this.offsetMarginFit
     }
@@ -1509,5 +1508,18 @@ export class Replayer {
     }
     // tslint:disable-next-line: no-console
     console.log(REPLAY_CONSOLE_PREFIX, ...args);
+  }
+
+  public drawCustomCursor(customCursor: HTMLDivElement, posX:number, posY: number, isNewCursor: boolean) {
+    // TODO: abstract to function applyScaling
+    if( this.currentFitSize !== null) {
+      posX *= this.offsetFactorFit
+      posY = ( posY * this.offsetFactorFit ) + this.offsetMarginFit
+    }
+    if (isNewCursor) {
+      this.wrapper.prepend(customCursor)
+    }
+    customCursor.style.left = `${posX}px`
+    customCursor.style.top = `${posY}px`
   }
 }

@@ -499,7 +499,7 @@ export type playerConfig = {
       };
   unpackFn?: UnpackFn;
   logConfig: LogReplayConfig;
-  customCursor: HTMLDivElement
+  customCursor?: HTMLDivElement
 };
 
 export type LogReplayConfig = {
