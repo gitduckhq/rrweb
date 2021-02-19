@@ -1454,4 +1454,12 @@ export class Replayer {
     // tslint:disable-next-line: no-console
     console.log(REPLAY_CONSOLE_PREFIX, ...args);
   }
+
+  private drawCustomCursor(customCursor: HTMLDivElement, posX:number, posY: number, isNewCursor: boolean) {
+    if (isNewCursor) {
+      this.wrapper.prepend(customCursor)
+    }
+    customCursor.style.left = `${posX}px`
+    customCursor.style.top = `${posY}px`
+  }
 }
