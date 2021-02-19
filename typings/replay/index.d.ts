@@ -57,4 +57,5 @@ export declare class Replayer {
     private debugNodeNotFound;
     private warn;
     private debug;
+    drawCustomCursor
 }
