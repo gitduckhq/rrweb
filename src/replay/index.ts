@@ -1511,7 +1511,7 @@ export class Replayer {
     console.log(REPLAY_CONSOLE_PREFIX, ...args);
   }
 
-  private drawCustomCursor(customCursor: HTMLDivElement, posX:number, posY: number, isNewCursor: boolean) {
+  public drawCustomCursor(customCursor: HTMLDivElement, posX:number, posY: number, isNewCursor: boolean) {
     if (isNewCursor) {
       this.wrapper.prepend(customCursor)
     }
